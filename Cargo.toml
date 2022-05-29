@@ -1,0 +1,11 @@
+[package]
+name = "labirust"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["JOLIMAITRE Matthieu <matthieu@imagevo.fr>"]
+description = "Naive rust crate for implementing and testing maze solving Algorithms."
+
+[dependencies]
+rand = "0.8.5"
+termion = "1.5.6"
