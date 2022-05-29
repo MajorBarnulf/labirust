@@ -8,5 +8,5 @@ description = "Naive rust crate for implementing and testing maze solving Algori
 repository = "https://github.com/MajorBarnulf/labirust/"
 
 [dependencies]
-rand = "0.8.5"
-termion = "1.5.6"
+rand = "0.8"
+termion = "1.5"
