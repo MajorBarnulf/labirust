@@ -1,3 +1,8 @@
+//! ## Executor
+//!
+//! This module contains the definition of an [`Executor`], used to run an [`Algorithm`] and have a graphical output in the terminal.
+//! This type is supposed to be created using the builder pattern (c.f. [`Executor`]`::build`).
+
 use std::{
     collections::{HashMap, HashSet},
     thread,

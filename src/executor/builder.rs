@@ -8,6 +8,7 @@ pub mod maze_state {
 
     use crate::{labyrinth::generator::MazeGenerator, Maze};
 
+    /// Describe the state of the [`Maze`] parameter in the builder of an [`crate::Executor`]. Not ment to be implemented.
     pub trait MazeState {}
     pub trait BuildableMazeState: MazeState {
         fn get(self) -> Maze;
@@ -55,6 +56,8 @@ pub mod maze_state {
         }
     }
 }
+
+/// Builder for an [`crate::Executor`], needs at least a [`Maze`].
 pub struct ExecutorBuilder<MS>
 where
     MS: MazeState,
@@ -63,7 +66,7 @@ where
     delay: Duration,
 }
 
-pub fn new_builder() -> ExecutorBuilder<Unprovided> {
+pub(crate) fn new_builder() -> ExecutorBuilder<Unprovided> {
     ExecutorBuilder {
         maze_state: Unprovided,
         delay: Duration::from_millis(100),
@@ -71,6 +74,7 @@ pub fn new_builder() -> ExecutorBuilder<Unprovided> {
 }
 
 impl<MS: MazeState> ExecutorBuilder<MS> {
+    /// Provide a specific [`Maze`] for the execution.
     pub fn maze(self, maze: Maze) -> ExecutorBuilder<Provided> {
         let Self {
             delay,
@@ -81,6 +85,8 @@ impl<MS: MazeState> ExecutorBuilder<MS> {
             maze_state: Provided::new(maze),
         }
     }
+
+    /// Provide a generator to generate a [`Maze`] for the execution.
     pub fn generated<G>(self, generator: G) -> ExecutorBuilder<Generated>
     where
         G: MazeGenerator + 'static,
@@ -94,6 +100,8 @@ impl<MS: MazeState> ExecutorBuilder<MS> {
             maze_state: Generated::new(generator),
         }
     }
+
+    /// Sets the delay between terminal redraws, default is 100ms.
     pub fn delay_ms(self, delay: u64) -> Self {
         let delay = Duration::from_millis(delay);
         let Self {
@@ -105,7 +113,7 @@ impl<MS: MazeState> ExecutorBuilder<MS> {
 }
 
 impl<MS: BuildableMazeState> ExecutorBuilder<MS> {
-    pub fn build(self) -> (Maze, Duration) {
+    pub(crate) fn build(self) -> (Maze, Duration) {
         let maze = self.maze_state.get();
         let delay = self.delay;
         (maze, delay)
