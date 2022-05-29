@@ -163,25 +163,26 @@ where
     fn draw(maze: &Maze, tried: &HashSet<Pos>, tick: usize, path: &Vec<Pos>) {
         let mut overlay = HashMap::new();
         for position in tried {
-            overlay.insert(*position, '#');
+            overlay.insert(*position, '░');
         }
-
         for position in path {
-            overlay.insert(*position, 'P');
+            overlay.insert(*position, '█');
         }
+        overlay.insert(maze.start(), 'S');
+        overlay.insert(maze.end(), 'E');
+        overlay.insert(*path.last().unwrap(), 'G');
 
-        overlay.insert(*path.last().unwrap(), 'x');
-
-        let text = maze.display(Some(overlay));
+        let grid = maze.display(Some(overlay));
+        let text = format!("tick {tick}:\n{grid}\n");
 
         // DIRTY!
         // print the frame on top of the previous one
         if tick > 0 {
-            let count = text.lines().count() + 1;
+            let count = text.lines().count();
             let up = termion::cursor::Up(count as u16);
             print!("{up}")
         }
 
-        print!("tick {tick}:\n{text}\n");
+        print!("{text}");
     }
 }
