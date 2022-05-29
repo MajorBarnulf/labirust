@@ -44,3 +44,7 @@ fn generation() {
     let text = maze.display(None);
     println!("{text}");
 }
+
+pub trait MazeGenerator {
+    fn generate(&mut self) -> Maze;
+}

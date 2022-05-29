@@ -6,6 +6,8 @@ use std::{
 
 use crate::{Algorithm, Maze, Pos};
 
+use self::builder::{new_builder, BuildableMazeState, ExecutorBuilder, Unprovided};
+
 /// A guess to pass to the current [`Executor`] at the end of every `progress` call.
 pub struct Guess(Vec<Pos>);
 
@@ -79,11 +81,14 @@ impl<'m> Context<'m> {
     }
 }
 
+mod builder;
+
 /// A structure holding a [`Maze`] and iteratively solving it with a provided [`Algorithm`].
 pub struct Executor<Algo>
 where
     Algo: Algorithm,
 {
+    delay: Duration,
     maze: Maze,
     algorithm: Algo,
 }
@@ -93,13 +98,32 @@ where
     A: Algorithm,
 {
     /// Constructor.
-    pub fn new(maze: Maze, algorithm: A) -> Self {
-        Self { maze, algorithm }
+    fn new(maze: Maze, algorithm: A, delay: Duration) -> Self {
+        Self {
+            maze,
+            algorithm,
+            delay,
+        }
+    }
+
+    pub fn build<'f, F, MS>(algorithm: A, builder: F) -> Self
+    where
+        MS: BuildableMazeState,
+        F: Fn(ExecutorBuilder<Unprovided>) -> ExecutorBuilder<MS>,
+    {
+        let operation = builder;
+        let mut builder = (operation)(new_builder());
+        let (maze, delay) = builder.build();
+        Self::new(maze, algorithm, delay)
     }
 
     /// Submit the maze to the [`Algorithm`] and iteratively progress through the maze driven by said algorithm.
     pub fn run(&mut self) {
-        let Self { maze, algorithm } = self;
+        let Self {
+            maze,
+            algorithm,
+            delay,
+        } = self;
         let mut insight = Insight::from_position(maze.start(), &maze);
         let mut tick = 0;
         let mut tried = HashSet::new();
@@ -116,7 +140,7 @@ where
 
             // draw
             Self::draw(maze, &tried, tick, &guess);
-            thread::sleep(Duration::from_millis(100));
+            thread::sleep(*delay);
             tick += 1;
 
             // check for next iteration

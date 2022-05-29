@@ -15,8 +15,8 @@ fn depth_first() {
     use crate::{generate, Executor};
     let algorithm = DepthFirst::new();
     let maze = generate(20, 20);
-    let mut executor = Executor::new(maze, algorithm);
-    executor.run();
+    // let mut executor = Executor::new(maze, algorithm);
+    // executor.run();
 }
 
 #[test]
@@ -24,6 +24,6 @@ fn breath_first() {
     use crate::{generate, Executor};
     let algorithm = BreathFirst::new();
     let maze = generate(20, 20);
-    let mut executor = Executor::new(maze, algorithm);
-    executor.run();
+    // let mut executor = Executor::new(maze, algorithm);
+    // executor.run();
 }
