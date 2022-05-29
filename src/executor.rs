@@ -131,14 +131,14 @@ where
     fn draw(maze: &Maze, tried: &HashSet<Pos>, tick: usize, path: &Vec<Pos>) {
         let mut overlay = HashMap::new();
         for position in tried {
-            overlay.insert(*position, 'T');
-        }
-
-        for position in path {
             overlay.insert(*position, '#');
         }
 
-        overlay.insert(*path.last().unwrap(), 'G');
+        for position in path {
+            overlay.insert(*position, 'P');
+        }
+
+        overlay.insert(*path.last().unwrap(), 'x');
 
         let text = maze.display(Some(overlay));
 
