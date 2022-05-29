@@ -10,7 +10,7 @@ Naive rust crate for implementing and testing maze solving Algorithms.
 
 ## Context
 
-Hi, I am a junior rust dev (yes, how original, I know) and this is one of the small projects I do to learn the languages and feel its system or learn its good practices.
+Hi, I am a junior rust dev (yes, how original, I know) and this is one of the small projects I do to learn the language and feel its system or learn its good practices.
 
 ## Usage
 
