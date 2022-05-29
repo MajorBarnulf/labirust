@@ -6,7 +6,10 @@ use std::{
 
 use crate::{Algorithm, Maze, Pos};
 
-use self::builder::{new_builder, BuildableMazeState, ExecutorBuilder, Unprovided};
+use self::builder::{
+    maze_state::{BuildableMazeState, Unprovided},
+    new_builder, ExecutorBuilder,
+};
 
 /// A guess to pass to the current [`Executor`] at the end of every `progress` call.
 pub struct Guess(Vec<Pos>);
@@ -112,7 +115,7 @@ where
         F: Fn(ExecutorBuilder<Unprovided>) -> ExecutorBuilder<MS>,
     {
         let operation = builder;
-        let mut builder = (operation)(new_builder());
+        let builder = (operation)(new_builder());
         let (maze, delay) = builder.build();
         Self::new(maze, algorithm, delay)
     }
