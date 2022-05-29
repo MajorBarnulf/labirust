@@ -1,6 +1,6 @@
 # Labirust
 
-Labirynths, in Rust.
+Labyrinths, in Rust.
 
 ---
 
