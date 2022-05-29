@@ -1,9 +1,6 @@
 use std::collections::{HashSet, VecDeque};
 
-use crate::{
-    algorithm::{Context, Guess, Insight},
-    Algorithm, Pos,
-};
+use crate::{Algorithm, Context, Guess, Insight, Pos};
 
 /// [`Algorithm`] traversing the [`crate::Maze`] as a common graph.
 /// Storing each possible paths form shortest to longest and extending the shortest ones first.

@@ -1,9 +1,6 @@
 use std::collections::HashSet;
 
-use crate::{
-    algorithm::{Context, Guess, Insight},
-    Algorithm, Pos,
-};
+use crate::{Algorithm, Context, Guess, Insight, Pos};
 
 /// Frame of the stack used by a [`DepthFirst`] to retain its path and possible branches.
 pub struct Frame {

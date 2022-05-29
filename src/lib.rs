@@ -7,10 +7,12 @@
 //!
 
 mod algorithm;
+mod executor;
 pub mod implementations;
 mod labyrinth;
 mod position;
 
-pub use algorithm::{Algorithm, Executor};
+pub use algorithm::Algorithm;
+pub use executor::{Context, Executor, Guess, Insight};
 pub use labyrinth::{generator::generate, Maze};
 pub use position::Pos;
