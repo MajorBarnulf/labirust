@@ -5,6 +5,7 @@ edition = "2021"
 license = "MIT"
 authors = ["JOLIMAITRE Matthieu <matthieu@imagevo.fr>"]
 description = "Naive rust crate for implementing and testing maze solving Algorithms."
+repository = "https://github.com/MajorBarnulf/labirust/"
 
 [dependencies]
 rand = "0.8.5"
