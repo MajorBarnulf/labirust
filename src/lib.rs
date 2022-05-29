@@ -14,5 +14,8 @@ mod position;
 
 pub use algorithm::Algorithm;
 pub use executor::{Context, Executor, Guess, Insight};
-pub use labyrinth::{generator::generate, Maze};
+pub use labyrinth::{
+    generator::{MazeGenerator, SimpleGenerator},
+    Maze,
+};
 pub use position::Pos;

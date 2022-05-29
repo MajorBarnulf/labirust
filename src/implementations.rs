@@ -12,18 +12,16 @@ pub use depth_first::DepthFirst;
 
 #[test]
 fn depth_first() {
-    use crate::{generate, Executor};
+    use crate::{Executor, SimpleGenerator};
     let algorithm = DepthFirst::new();
-    let maze = generate(20, 20);
-    // let mut executor = Executor::new(maze, algorithm);
-    // executor.run();
+    let mut executor = Executor::build(algorithm, |b| b.generated(SimpleGenerator::new(40, 20)));
+    executor.run();
 }
 
 #[test]
 fn breath_first() {
-    use crate::{generate, Executor};
+    use crate::{Executor, SimpleGenerator};
     let algorithm = BreathFirst::new();
-    let maze = generate(20, 20);
-    // let mut executor = Executor::new(maze, algorithm);
-    // executor.run();
+    let mut executor = Executor::build(algorithm, |b| b.generated(SimpleGenerator::new(40, 20)));
+    executor.run();
 }

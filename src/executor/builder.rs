@@ -50,7 +50,7 @@ pub mod maze_state {
 
     impl MazeState for Generated {}
     impl BuildableMazeState for Generated {
-        fn get(mut self) -> Maze {
+        fn get(self) -> Maze {
             self.generator.generate()
         }
     }
