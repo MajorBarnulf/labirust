@@ -92,21 +92,15 @@ impl<'m> Context<'m> {
 mod builder;
 
 /// A structure holding a [`Maze`] and iteratively solving it with a provided [`Algorithm`].
-pub struct Executor<Algo>
-where
-    Algo: Algorithm,
-{
+pub struct Executor {
     delay: Duration,
     maze: Maze,
-    algorithm: Algo,
+    algorithm: Box<dyn Algorithm>,
 }
 
-impl<A> Executor<A>
-where
-    A: Algorithm,
-{
+impl Executor {
     /// Constructor.
-    fn new(maze: Maze, algorithm: A, delay: Duration) -> Self {
+    fn new(maze: Maze, algorithm: Box<dyn Algorithm>, delay: Duration) -> Self {
         Self {
             maze,
             algorithm,
@@ -114,22 +108,27 @@ where
         }
     }
 
-    pub fn build<'f, F, MS>(algorithm: A, builder: F) -> Self
+    pub fn build<'f, A, F, MS>(algorithm: A, builder: F) -> Self
     where
+        A: Algorithm + 'static,
         MS: BuildableMazeState,
         F: Fn(ExecutorBuilder<Unprovided>) -> ExecutorBuilder<MS>,
     {
         let operation = builder;
         let builder = (operation)(new_builder());
         let (maze, delay) = builder.build();
+        let algorithm = Box::new(algorithm);
         Self::new(maze, algorithm, delay)
     }
 
-    pub fn build_dyn<F>(algorithm: A, builder: F) -> Self
+    pub fn build_dyn<F>(algorithm: Box<dyn Algorithm>, builder: F) -> Self
     where
         F: Fn(DynExecutorBuilder) -> DynExecutorBuilder,
     {
-        todo!()
+        let operation = builder;
+        let builder = (operation)(DynExecutorBuilder::new());
+        let (maze, delay) = builder.build();
+        Self::new(maze, algorithm, delay)
     }
 
     /// Submit the maze to the [`Algorithm`] and iteratively progress through the maze driven by said algorithm.

@@ -11,7 +11,7 @@ pub mod maze_state {
     /// Describe the state of the [`Maze`] parameter in the builder of an [`crate::Executor`]. Not ment to be implemented.
     pub trait MazeState {}
     pub trait BuildableMazeState: MazeState {
-        fn get(self) -> Maze;
+        fn get(&self) -> Maze;
     }
 
     pub struct Unprovided;
@@ -30,8 +30,8 @@ pub mod maze_state {
 
     impl MazeState for Provided {}
     impl BuildableMazeState for Provided {
-        fn get(self) -> Maze {
-            self.maze
+        fn get(&self) -> Maze {
+            self.maze.clone()
         }
     }
 
@@ -51,7 +51,7 @@ pub mod maze_state {
 
     impl MazeState for Generated {}
     impl BuildableMazeState for Generated {
-        fn get(self) -> Maze {
+        fn get(&self) -> Maze {
             self.generator.generate()
         }
     }
@@ -120,4 +120,34 @@ impl<MS: BuildableMazeState> ExecutorBuilder<MS> {
     }
 }
 
-pub struct DynExecutorBuilder {}
+pub struct DynExecutorBuilder {
+    maze: Option<Box<dyn BuildableMazeState>>,
+    delay: Duration,
+}
+
+impl DynExecutorBuilder {
+    pub(crate) fn new() -> Self {
+        Self {
+            maze: None,
+            delay: Duration::from_millis(100),
+        }
+    }
+
+    pub fn maze(self, maze: Maze) -> Self {
+        todo!()
+    }
+
+    pub fn generated(self, maze: Box<dyn MazeGenerator>) -> Self {
+        todo!()
+    }
+
+    pub fn delay_ms(self, delay: u64) -> Self {
+        todo!()
+    }
+
+    pub(crate) fn build(self) -> (Maze, Duration) {
+        let maze = self.maze.expect("no buildable maze provided").get();
+        let delay = self.delay;
+        (maze, delay)
+    }
+}
