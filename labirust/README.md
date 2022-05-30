@@ -14,14 +14,19 @@ Hi, I am a junior rust dev (yes, how original, I know) and this is one of the sm
 
 ## Usage
 
-If you want to see what the library is capable of, you can clone this repo and run the tests to see mazes solving themselves on the terminal.
-
-for you to see anything during the execution of tests, don't forget to add these arguments:
+If you want to see what the library is capable of, you can try the CLI, either by clonning this repo and building it with cargo or by installing it through the crates.io depot.
 ```sh
--- --nocapture
+# installation
+cargo install labirust-cli
 
-# example:
-cargo test -- implementations::breath_first --nocapture
+# usage
+labirust-cli --help
 ```
 
+
 If you want to implement more resolution algorithm yourself and for some reason you think this is the right crate to provide frameworks, you can explore the crate documentation and add this crate to your project dependencies.
+```toml
+# in Cargo.toml
+[dependencies]
+labirust = "0.3"
+```

@@ -2,9 +2,11 @@
 name = "labirust-cli"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
+authors = ["JOLIMAITRE Matthieu <matthieu@imagevo.fr>"]
+description = "A cli to run labirust algorithms."
+repository = "https://github.com/MajorBarnulf/labirust/"
 
 [dependencies]
-labirust = { path = "../labirust" }
-clap = { version = "3.1.18", features = ["derive"] }
+labirust = "0.3"
+clap = { version = "3.1", features = ["derive"] }

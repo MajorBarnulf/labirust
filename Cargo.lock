@@ -114,7 +114,17 @@ dependencies = [
 
 [[package]]
 name = "labirust"
-version = "0.2.1"
+version = "0.3.0"
+dependencies = [
+ "rand",
+ "termion",
+]
+
+[[package]]
+name = "labirust"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "be89e6ef8c189ed1fa5acb4475a3b43c2aa835c0788fb38b11df3ddb58359f8c"
 dependencies = [
  "rand",
  "termion",
@@ -125,7 +135,7 @@ name = "labirust-cli"
 version = "0.1.0"
 dependencies = [
  "clap",
- "labirust",
+ "labirust 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
