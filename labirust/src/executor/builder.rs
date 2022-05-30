@@ -119,3 +119,5 @@ impl<MS: BuildableMazeState> ExecutorBuilder<MS> {
         (maze, delay)
     }
 }
+
+pub struct DynExecutorBuilder {}

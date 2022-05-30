@@ -13,7 +13,7 @@ use crate::{Algorithm, Maze, Pos};
 
 use self::builder::{
     maze_state::{BuildableMazeState, Unprovided},
-    new_builder, ExecutorBuilder,
+    new_builder, DynExecutorBuilder, ExecutorBuilder,
 };
 
 /// A guess to pass to the current [`Executor`] at the end of every `progress` call.
@@ -123,6 +123,13 @@ where
         let builder = (operation)(new_builder());
         let (maze, delay) = builder.build();
         Self::new(maze, algorithm, delay)
+    }
+
+    pub fn build_dyn<F>(algorithm: A, builder: F) -> Self
+    where
+        F: Fn(DynExecutorBuilder) -> DynExecutorBuilder,
+    {
+        todo!()
     }
 
     /// Submit the maze to the [`Algorithm`] and iteratively progress through the maze driven by said algorithm.
