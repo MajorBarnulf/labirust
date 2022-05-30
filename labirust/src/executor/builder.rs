@@ -47,6 +47,10 @@ pub mod maze_state {
             let generator = Box::new(generator);
             Self { generator }
         }
+
+        pub fn new_dyn(generator: Box<dyn MazeGenerator + 'static>) -> Self {
+            Self { generator }
+        }
     }
 
     impl MazeState for Generated {}
@@ -120,33 +124,55 @@ impl<MS: BuildableMazeState> ExecutorBuilder<MS> {
     }
 }
 
+pub enum DynMazeState {
+    None,
+    Provided(Provided),
+    Generated(Generated),
+}
+
+impl DynMazeState {
+    pub fn get(self) -> Option<Maze> {
+        match self {
+            DynMazeState::None => None,
+            DynMazeState::Provided(provided) => Some(provided.get()),
+            DynMazeState::Generated(generated) => Some(generated.get()),
+        }
+    }
+}
+
 pub struct DynExecutorBuilder {
-    maze: Option<Box<dyn BuildableMazeState>>,
+    maze: DynMazeState,
     delay: Duration,
 }
 
 impl DynExecutorBuilder {
     pub(crate) fn new() -> Self {
         Self {
-            maze: None,
+            maze: DynMazeState::None,
             delay: Duration::from_millis(100),
         }
     }
 
     pub fn maze(self, maze: Maze) -> Self {
-        todo!()
+        let maze = DynMazeState::Provided(Provided::new(maze));
+        let Self { maze: _, delay } = self;
+        Self { maze, delay }
     }
 
-    pub fn generated(self, maze: Box<dyn MazeGenerator>) -> Self {
-        todo!()
+    pub fn generated(self, generator: Box<dyn MazeGenerator>) -> Self {
+        let maze = DynMazeState::Generated(Generated::new_dyn(generator));
+        let Self { maze: _, delay } = self;
+        Self { delay, maze }
     }
 
     pub fn delay_ms(self, delay: u64) -> Self {
-        todo!()
+        let delay = Duration::from_millis(delay);
+        let Self { maze, delay: _ } = self;
+        Self { maze, delay }
     }
 
     pub(crate) fn build(self) -> (Maze, Duration) {
-        let maze = self.maze.expect("no buildable maze provided").get();
+        let maze = self.maze.get().expect("no buildable maze provided");
         let delay = self.delay;
         (maze, delay)
     }
